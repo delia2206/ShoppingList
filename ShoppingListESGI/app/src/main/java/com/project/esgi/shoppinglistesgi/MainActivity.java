@@ -16,37 +16,15 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Activity";
+    //private static final String URL_TO_HIT = "http://appspaces.fr/esgi/shopping_list/account/login.php?email=the&password=t";
+    private static final String URL_TO_HIT = "http://jsonparsing.parseapp.com/jsonData/moviesData.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        try{
-            URL url = new URL("http://appspaces.fr/esgi/shopping_list/");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-
-            //
-            conn.connect();
-            int response = conn.getResponseCode();
-            Log.d(TAG, "The response is: " + response);
-            InputStream is = conn.getInputStream();
-
-            //code ici
-
-            is.close();
-            conn.disconnect();
-        } catch (Exception e) {
-             new Exception("problem");
-        }
-
-
+        new JSONTask().execute(URL_TO_HIT);
 
     }
 }
