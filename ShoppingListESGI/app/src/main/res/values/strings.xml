@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Shopping List ESGI</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="add_button_text">Ajouter</string>
+    <string name="item_editText_hint">Entrer un nouvel élément</string>
 </resources>
