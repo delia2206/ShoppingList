@@ -1,12 +1,11 @@
 package com.project.esgi.shoppinglistesgi;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +22,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginFragment extends Fragment {
+public class SignupFragment extends Fragment {
+    public static String firstname;
+    public static String lastname;
     public static String email;
     public static String password;
 
+    private EditText fname;
+    private EditText lname;
     private EditText mail;
     private EditText pwd;
-    public Button loginBtn;
-    public TextView signUpLink;
+    public Button signupBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,20 +42,15 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+        fname = (EditText) view.findViewById(R.id.firstname);
+        lname = (EditText) view.findViewById(R.id.lastname);
         mail = (EditText) view.findViewById(R.id.email);
         pwd = (EditText) view.findViewById(R.id.password);
 
-        loginBtn = (Button) view.findViewById(R.id.btn_login);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
-        signUpLink = (TextView) view.findViewById(R.id.link_signup);
-        signUpLink.setOnClickListener(new View.OnClickListener() {
+        signupBtn = (Button) view.findViewById(R.id.btn_signup);
+        signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup();
@@ -63,32 +60,25 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void signup() {
-        Fragment fragment = new SignupFragment();
-        FragmentManager fragmentManager;
 
-        fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentLogin, fragment)
-                .commit();
-    }
-
-    public void login() {
+    public void signup() {
         if (!validation()) {
             return;
         }
 
-        loginBtn.setEnabled(false);
+        signupBtn.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authentification...");
+        progressDialog.setMessage("Enregistrement...");
         progressDialog.show();
 
+        firstname = fname.getText().toString();
+        lastname = lname.getText().toString();
         email = mail.getText().toString();
         password = pwd.getText().toString();
 
-        String url = Constant.LOGIN_URL+"?email="+email+"&password="+password;
+        String url = Constant.SIGNUP_URL+"?firstname="+firstname+"&lastname="+lastname+"&email="+email+"&password="+password;
 
         final WebService asyncTask = new WebService(this.getActivity());
         asyncTask.setListener(new ConnectionListener() {
@@ -107,10 +97,10 @@ public class LoginFragment extends Fragment {
                     editor.putBoolean("is_connected", true);
                     editor.apply();
 
-                    onLoginSuccess();
+                    onSignupSuccess();
 
                 } catch (JSONException e) {
-                    onLoginFailed();
+                    onSignupFailed();
                     e.printStackTrace();
                 }
             }
@@ -118,16 +108,16 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailed(String msg) {
                 progressDialog.dismiss();
-                onLoginFailed();
+                onSignupFailed();
             }
         });
 
         asyncTask.execute(url);
     }
 
-    public void onLoginSuccess() {
-        loginBtn.setEnabled(true);
-        Toast.makeText(getActivity(), "Connecté avec succès !", Toast.LENGTH_LONG).show();
+    public void onSignupSuccess() {
+        signupBtn.setEnabled(true);
+        Toast.makeText(getActivity(), "Enregistré avec succès !", Toast.LENGTH_LONG).show();
 
         Fragment fragment = new ShoppingListFragment();
         FragmentManager fragmentManager;
@@ -139,21 +129,36 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public void onLoginFailed() {
-        Toast.makeText(getActivity(), "Veuillez renseigner des identifiants corrects", Toast.LENGTH_LONG).show();
+    public void onSignupFailed() {
+        Toast.makeText(getActivity(), "Un problème a eu lieu à l'enregistrement", Toast.LENGTH_LONG).show();
 
-        loginBtn.setEnabled(true);
+        signupBtn.setEnabled(true);
     }
 
     public boolean validation() {
         boolean valid = true;
 
+        String firstname = fname.getText().toString();
+        String lastname = lname.getText().toString();
         String email = mail.getText().toString();
         String password = pwd.getText().toString();
 
+        if (firstname.isEmpty()) {
+            fname.setError("Veuillez entrer votre prénom ");
+            valid = false;
+        } else {
+            fname.setError(null);
+        }
+
+        if (lastname.isEmpty()) {
+            lname.setError("Veuillez entrer votre nom ");
+            valid = false;
+        } else {
+            lname.setError(null);
+        }
 
         if (email.isEmpty()) {
-            mail.setError("Veuillez entrer une adresse email ");
+            mail.setError("Veuillez entrer votre adresse email ");
             valid = false;
         } else {
             mail.setError(null);
