@@ -3,31 +3,27 @@ package com.project.esgi.shoppinglistesgi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.project.esgi.shoppinglistesgi.Util.Constant;
 import com.project.esgi.shoppinglistesgi.WebService.ConnectionListener;
 import com.project.esgi.shoppinglistesgi.WebService.WebService;
+import com.project.esgi.shoppinglistesgi.models.ShoppingList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class ShoppingListFragment extends Fragment {
@@ -37,7 +33,7 @@ public class ShoppingListFragment extends Fragment {
     private EditText productName;
     private ListView shoppingListView;
 
-    ArrayList<HashMap<String, String>> shoppingList;
+    ArrayList<String> shoppingList;
 
     String token = "f35bd1319725e50327f488012436fc35";
 
@@ -80,23 +76,18 @@ public class ShoppingListFragment extends Fragment {
                 try {
                     JSONArray resultJSON = json.getJSONArray("result");
 
-                    for (int i = 0; i < resultJSON.length(); i++) {
-                        JSONObject rj = resultJSON.getJSONObject(i);
 
-                        String name = rj.getString("name");
-                        String token = rj.getString("user_token");
-
-                        HashMap<String, String> product = new HashMap<>();
-                        product.put("name", name);
-                        product.put("user_token", token);
-
-                        shoppingList.add(product);
-                        Log.INFO(name);
+                    if (resultJSON != null) {
+                        int len = resultJSON.length();
+                        for (int i=0;i<len;i++){
+                            JSONObject product = resultJSON.getJSONObject(i);
+                            shoppingList.add(product.getString("name"));
+                        }
                     }
 
-                    /*ArrayAdapter<String> a = new ArrayAdapter<String>(this,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String >(getActivity(),
                             android.R.layout.simple_list_item_1, shoppingList);
-                    shoppingListView.setAdapter(a);*/
+                    shoppingListView.setAdapter(adapter);
 
 
                 } catch (JSONException e) {
@@ -106,7 +97,7 @@ public class ShoppingListFragment extends Fragment {
 
             @Override
             public void onFailed(String msg) {
-
+                Toast.makeText(getActivity(), "Problème rencontré lors de l'accès aux listes", Toast.LENGTH_LONG).show();
             }
         });
 
