@@ -80,8 +80,8 @@ public class ShoppingListFragment extends Fragment {
                     if (resultJSON != null) {
                         int len = resultJSON.length();
                         for (int i=0;i<len;i++){
-                            JSONObject product = resultJSON.getJSONObject(i);
-                            shoppingList.add(product.getString("name"));
+                            JSONObject item = resultJSON.getJSONObject(i);
+                            shoppingList.add(item.getString("name"));
                         }
                     }
 
@@ -145,5 +145,6 @@ public class ShoppingListFragment extends Fragment {
         });
 
         asyncTask.execute(url);
+
     }
 }
