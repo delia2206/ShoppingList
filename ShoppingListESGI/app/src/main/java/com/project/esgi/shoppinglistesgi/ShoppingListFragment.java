@@ -35,6 +35,8 @@ public class ShoppingListFragment extends Fragment {
 
     ArrayList<String> shoppingList;
 
+    ArrayAdapter<String> adapter;
+
     String token = "f35bd1319725e50327f488012436fc35";
 
     public ShoppingListFragment() {
@@ -52,6 +54,10 @@ public class ShoppingListFragment extends Fragment {
         shoppingListView = (ListView) view.findViewById(R.id.shopping_listView);
 
         shoppingList = new ArrayList<>();
+
+        adapter = new ArrayAdapter<String >(getActivity(),
+                android.R.layout.simple_list_item_1, shoppingList);
+        shoppingListView.setAdapter(adapter);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +91,10 @@ public class ShoppingListFragment extends Fragment {
                         }
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String >(getActivity(),
+                    /*adapter = new ArrayAdapter<String >(getActivity(),
                             android.R.layout.simple_list_item_1, shoppingList);
-                    shoppingListView.setAdapter(adapter);
+                    shoppingListView.setAdapter(adapter);*/
+                    adapter.notifyDataSetChanged();
 
 
                 } catch (JSONException e) {
@@ -114,6 +121,9 @@ public class ShoppingListFragment extends Fragment {
 
         product = productName.getText().toString();
 
+        shoppingList.add(product);
+        adapter.notifyDataSetChanged();
+
         String url = Constant.CREATE_SHOPPINGLIST_URL+"?token="+token+"&name="+product;
 
         final WebService asyncTask = new WebService(this.getActivity());
@@ -130,7 +140,10 @@ public class ShoppingListFragment extends Fragment {
                     editor.putString("user_token", resultJSON.getString("token"));
                     editor.apply();
 
+
                     Toast.makeText(getActivity(), "Produit ajouté avec succès !", Toast.LENGTH_LONG).show();
+
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
