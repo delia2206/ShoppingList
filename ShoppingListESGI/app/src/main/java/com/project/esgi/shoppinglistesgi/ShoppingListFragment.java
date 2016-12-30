@@ -1,5 +1,6 @@
 package com.project.esgi.shoppinglistesgi;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ public class ShoppingListFragment extends Fragment {
     public static String product;
 
     public Button addBtn;
+    public Button disconnectBtn;
     private EditText productName;
     private ListView shoppingListView;
 
@@ -50,6 +52,7 @@ public class ShoppingListFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
         addBtn = (Button) view.findViewById(R.id.addBtn);
+        disconnectBtn = (Button) view.findViewById(R.id.disconnectBtn);
         productName = (EditText) view.findViewById(R.id.productName);
         shoppingListView = (ListView) view.findViewById(R.id.shopping_listView);
 
@@ -63,6 +66,13 @@ public class ShoppingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 addProduct();
+            }
+        });
+
+        disconnectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disconnect();
             }
         });
 
@@ -159,5 +169,17 @@ public class ShoppingListFragment extends Fragment {
 
         asyncTask.execute(url);
 
+    }
+
+    public void disconnect(){
+        MainActivity.tokenLogin = "";
+        Fragment fragment = new LoginFragment();
+        FragmentManager fragmentManager;
+
+        fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentLogin, fragment)
+                .commit();
+        Toast.makeText(getActivity(), "Déconnecté avec succès !", Toast.LENGTH_LONG).show();
     }
 }
