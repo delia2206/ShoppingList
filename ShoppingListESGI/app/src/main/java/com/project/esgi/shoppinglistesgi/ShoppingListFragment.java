@@ -37,7 +37,7 @@ public class ShoppingListFragment extends Fragment {
 
     ArrayAdapter<String> adapter;
 
-    String token = "f35bd1319725e50327f488012436fc35";
+    String token = MainActivity.tokenLogin;
 
     public ShoppingListFragment() {
         // Required empty public constructor

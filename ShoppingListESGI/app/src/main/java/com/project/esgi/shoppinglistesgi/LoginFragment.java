@@ -106,6 +106,7 @@ public class LoginFragment extends Fragment {
                     editor.putString("user_token", resultJSON.getString("token"));
                     editor.putBoolean("is_connected", true);
                     editor.apply();
+                    MainActivity.tokenLogin = resultJSON.getString("token");
 
                     onLoginSuccess();
 
