@@ -59,7 +59,7 @@ public class ShoppingListFragment extends Fragment {
         shoppingList = new ArrayList<>();
 
         adapter = new ArrayAdapter<String >(getActivity(),
-                android.R.layout.simple_list_item_1, shoppingList);
+                R.layout.list_item, R.id.item_title, shoppingList);
         shoppingListView.setAdapter(adapter);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
