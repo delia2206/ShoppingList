@@ -27,6 +27,8 @@ import java.util.List;
 public class ShoppingListAdapter extends ArrayAdapter<String> {
 
     Context context;
+    private int layout;
+    private List<String> shoppingList;
 
     private static class ViewHolder {
         public Button deleteBtn;
@@ -35,6 +37,8 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
 
     public ShoppingListAdapter(Context context, int list_item, List<String> lists) {
         super(context, R.layout.list_item, lists);
+        layout = list_item;
+        shoppingList = lists;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.list_item, parent, false);
+            convertView = inflater.inflate(layout, parent, false);
 
             viewHolder.deleteBtn = (Button) convertView.findViewById(R.id.deleteBtn);
             viewHolder.item_title = (TextView) convertView.findViewById(R.id.item_title);
@@ -108,6 +112,7 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
 
             }
         });
+        viewHolder.item_title.setText(getItem(position));
 
         return convertView;
     }
