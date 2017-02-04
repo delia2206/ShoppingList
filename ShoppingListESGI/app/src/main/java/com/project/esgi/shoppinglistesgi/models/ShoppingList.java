@@ -11,6 +11,9 @@ public class ShoppingList {
     private Date created_date;
     private Boolean completed;
 
+    public ShoppingList(Integer id, String name, Date created_date, boolean b) {
+    }
+
     public Integer getId() {
         return id;
     }

@@ -37,7 +37,7 @@ public class ShoppingListFragment extends Fragment {
 
     ArrayList<String> shoppingList;
 
-    ArrayAdapter<String> adapter;
+    ShoppingListAdapter adapter;
 
     String token = MainActivity.tokenLogin;
 
@@ -58,8 +58,8 @@ public class ShoppingListFragment extends Fragment {
 
         shoppingList = new ArrayList<>();
 
-        adapter = new ArrayAdapter<String >(getActivity(),
-                R.layout.list_item, R.id.item_title, shoppingList);
+        adapter = new ShoppingListAdapter(getActivity(),
+                R.layout.list_item, shoppingList);
         shoppingListView.setAdapter(adapter);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,9 +101,7 @@ public class ShoppingListFragment extends Fragment {
                         }
                     }
 
-                    /*adapter = new ArrayAdapter<String >(getActivity(),
-                            android.R.layout.simple_list_item_1, shoppingList);
-                    shoppingListView.setAdapter(adapter);*/
+
                     adapter.notifyDataSetChanged();
 
 

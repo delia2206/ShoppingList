@@ -8,4 +8,5 @@ import org.json.JSONObject;
 public interface ConnectionListener {
     public void onSuccess(JSONObject obj);
     public void onFailed(String msg);
+
 }
