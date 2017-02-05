@@ -101,6 +101,7 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
                 asyncTask.execute(urlDelete);
                 //Suppression de l'émément de la liste
                 shoppingList.remove(getItem(position));
+                MainActivity.idItemList.remove(position);
                 notifyDataSetChanged();
 
             }

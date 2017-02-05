@@ -148,9 +148,10 @@ public class ShoppingListFragment extends Fragment {
 
                 try {
                     JSONObject resultJSON = json.getJSONObject("result");
-                    editor.putString("name", resultJSON.getString("name"));
-                    editor.putString("user_token", resultJSON.getString("token"));
-                    editor.apply();
+                    //editor.putString("name", resultJSON.getString("name"));
+                    //editor.putString("user_token", resultJSON.getString("token"));
+                    //editor.apply();
+                    MainActivity.idItemList.add(resultJSON.getString("id"));
 
 
                     Toast.makeText(getActivity(), "Produit ajouté avec succès !", Toast.LENGTH_LONG).show();
