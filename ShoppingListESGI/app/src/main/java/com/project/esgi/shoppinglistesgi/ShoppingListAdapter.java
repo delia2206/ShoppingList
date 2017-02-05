@@ -61,7 +61,6 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
 
         }
         viewHolder = (ViewHolder) convertView.getTag();
-        //final ShoppingList list = getItem(position);
 
 
         //Au click sur le bouton supprimer
@@ -69,47 +68,7 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                /*SharedPreferences sharedPreferences = getContext().getSharedPreferences("shoppingList", Context.MODE_PRIVATE);
-                String token = sharedPreferences.getString("token", "");
 
-                final WebService asyncTask = new WebService(context);
-                String url;
-
-                url = Constant.REMOVE_PRODUCT_URL + "?token=" + token + "&id=" + list.getId();
-                asyncTask.execute(url);
-
-                asyncTask.setListener(new ConnectionListener() {
-
-                    @Override
-                    public void onSuccess(JSONObject object) {
-
-                        try {
-
-                            Integer code = object.getInt("code");
-
-                            if (code == 0) {
-
-                                Toast toast = Toast.makeText(getContext(), "Produit supprimé avec succès", Toast.LENGTH_LONG);
-                                toast.show();
-
-                            } else {
-
-                                Toast toast = Toast.makeText(getContext(), "Error, please try later", Toast.LENGTH_LONG);
-                                toast.show();
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailed(String msg) {
-                        Toast.makeText(getContext(), "Problème rencontré lors de la suppression", Toast.LENGTH_LONG).show();
-                    }
-                });*/
                 //Toast.makeText(getContext(), "Click, position = " + position, Toast.LENGTH_SHORT).show();
                 //lie le tableau à la position cliquer pour récupérer l'id : MainActivity.idItemList.get(position)
                 //Toast.makeText(getContext(), MainActivity.idItemList.get(position), Toast.LENGTH_LONG).show();
@@ -140,7 +99,8 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
                 });
 
                 asyncTask.execute(urlDelete);
-                //Rappeler la méthode getLists dans le ShoppingListFrament
+                //Suppression de l'émément de la liste
+                shoppingList.remove(getItem(position));
                 notifyDataSetChanged();
 
             }
