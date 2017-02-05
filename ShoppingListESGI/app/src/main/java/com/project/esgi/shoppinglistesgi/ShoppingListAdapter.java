@@ -16,8 +16,10 @@ import com.project.esgi.shoppinglistesgi.WebService.ConnectionListener;
 import com.project.esgi.shoppinglistesgi.WebService.WebService;
 import com.project.esgi.shoppinglistesgi.models.ShoppingList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
     Context context;
     private int layout;
     private List<String> shoppingList;
+    private static final String LOG = "log";
 
     private static class ViewHolder {
         public Button deleteBtn;
@@ -107,15 +110,39 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
                         Toast.makeText(getContext(), "Problème rencontré lors de la suppression", Toast.LENGTH_LONG).show();
                     }
                 });*/
-                Toast.makeText(getContext(), "Click, position = " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Click, position = " + position, Toast.LENGTH_SHORT).show();
                 //lie le tableau à la position cliquer pour récupérer l'id : MainActivity.idItemList.get(position)
-                Toast.makeText(getContext(), MainActivity.idItemList.get(position), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), MainActivity.idItemList.get(position), Toast.LENGTH_LONG).show();
+
+
                 //URL de suppression d'un item de la liste
                 String urlDelete = Constant.REMOVE_SHOPPINGLIST_URL+"?token="+MainActivity.tokenLogin+"&id="+ MainActivity.idItemList.get(position);
                 //execution
-                //...
+                final WebService asyncTask = new WebService(getContext());
+                asyncTask.setListener(new ConnectionListener() {
+                    @Override
+                    public void onSuccess(JSONObject json) {
 
+                        try {
+                            JSONObject resultJSON = json.getJSONObject("result");
+                            Toast.makeText(getContext(), "Item supprimé", Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            //Toast.makeText(getContext(), "Erreur", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(String msg) {
+                        Toast.makeText(getContext(), "Problème rencontré lors de la suppression", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                asyncTask.execute(urlDelete);
                 //Rappeler la méthode getLists dans le ShoppingListFrament
+                notifyDataSetChanged();
+
             }
         });
         viewHolder.item_title.setText(getItem(position));
