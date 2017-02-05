@@ -108,8 +108,14 @@ public class ShoppingListAdapter extends ArrayAdapter<String> {
                     }
                 });*/
                 Toast.makeText(getContext(), "Click, position = " + position, Toast.LENGTH_SHORT).show();
+                //lie le tableau à la position cliquer pour récupérer l'id : MainActivity.idItemList.get(position)
+                Toast.makeText(getContext(), MainActivity.idItemList.get(position), Toast.LENGTH_LONG).show();
+                //URL de suppression d'un item de la liste
+                String urlDelete = Constant.REMOVE_SHOPPINGLIST_URL+"?token="+MainActivity.tokenLogin+"&id="+ MainActivity.idItemList.get(position);
+                //execution
+                //...
 
-
+                //Rappeler la méthode getLists dans le ShoppingListFrament
             }
         });
         viewHolder.item_title.setText(getItem(position));

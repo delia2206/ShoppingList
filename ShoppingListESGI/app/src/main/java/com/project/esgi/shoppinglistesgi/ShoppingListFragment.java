@@ -57,6 +57,8 @@ public class ShoppingListFragment extends Fragment {
         shoppingListView = (ListView) view.findViewById(R.id.shopping_listView);
 
         shoppingList = new ArrayList<>();
+        //recupere le tableau global
+        MainActivity.idItemList = new ArrayList<>();
 
         adapter = new ShoppingListAdapter(getActivity(),
                 R.layout.list_item, shoppingList);
@@ -98,6 +100,8 @@ public class ShoppingListFragment extends Fragment {
                         for (int i=0;i<len;i++){
                             JSONObject item = resultJSON.getJSONObject(i);
                             shoppingList.add(item.getString("name"));
+                            //rempli un tableau d'id dans une variable global
+                            MainActivity.idItemList.add(item.getString("id"));
                         }
                     }
 
